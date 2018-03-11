@@ -245,7 +245,15 @@
                     anxTemp += scoreArray[i]
                 }
                 depResult = depTemp;
+              //  var input = document.getElementById('depInput');
+              //  input.value=depResult;
                 anxResult = anxTemp;
+                //var input = document.getElementById('anxInput');
+                //input.value=anxResult
+
+                $("#depInput").attr("value", depResult);
+                $("#anxInput").attr("value", anxResult);
+
             }
 
             function updateScore(){
@@ -293,6 +301,13 @@
 
 
         </script>
+        <form action="/input" method="post">
+          <input type="hidden" name="depResult" placeholder="Name" id="depInput">
+          <input type="hidden" name="anxResult" placeholder="Name" id="anxInput">
+          <input type="text" name="number" placeholder="Number">
+          <button type="submit" >submit</button>
+
+        </form>
 
     </body>
 

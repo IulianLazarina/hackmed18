@@ -5,7 +5,6 @@ var schedule = require('node-schedule');
 const Nexmo = require('nexmo');
 
 
-
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -22,9 +21,10 @@ app.post('/input', function(req, res) {
   //Log the Events                                            ora minut zi luna
   var logCost = schedule.scheduleJob('59 19 * * *', function(){
     nexmo.message.sendSms(from, to, text)
+    console.log(req.body);
   });
 
   console.log(req.body);
-  res.send("ok");
+  res.send(req.body);
 });
 app.listen(8000, () => console.log('App listening on port 8000!'))
