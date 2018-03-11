@@ -1,0 +1,375 @@
+<html>
+
+    <head>
+        <title></title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+        <style type="text/css">
+
+            body{
+                margin:0px;
+                padding:0px;
+                font-family:Helvetica;
+            }
+
+            #jumboTop{
+                text-align: center;
+            }
+
+            .responseContainer{
+                //margin:0 auto;
+                display:flex;
+                flex-direction: row;
+                background-color: blue;
+                height:100px;
+                width: 100%;
+
+            }
+
+            .response{
+                width:24%;
+                height:70px;
+                padding:30px;
+                flex-grow: 1;
+                background-color: #405060;
+                //border: 1px black solid;
+                font-size: 30px;
+                text-align: center;
+                //vertical-align: middle;
+                color:white;
+                cursor:pointer;
+            }
+
+            .responseActive{
+                background-color: red;
+            }
+            .responseActive:hover{
+                background-color:#f08080 !important;
+            }
+
+            .response:hover{
+                background-color:#8090a0;
+            }
+
+            .questionContainer{
+                height:110%;
+                background-color: #d0e0f0;
+                display:flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            .question{
+                text-align: center;
+                font-size: 40px;
+                padding:200 100px;
+            }
+
+            #resultsBottom{
+                height:110%;
+            }
+
+            #resultsContainer{
+                padding-top:40px;
+                text-align: center;
+                font-size: 30px;
+                position:relative;
+                top:200px;
+            }
+
+            #landingTop{
+                text-align: center;
+                height:110%;
+            }
+
+            #startButton{
+                margin: auto;
+                height:70px;
+                width:200px;
+                border-radius: 20px;
+                background-color: green;
+                padding-top:30px;
+                cursor: pointer;
+            }
+
+						#drugInputContainer{
+							height:100px;
+							position:relative;
+							top:240px;
+							text-align: center;
+						}
+
+						#drugInput{
+							font-size:20px;
+						}
+
+						#drugDose{
+							font-size:20px;
+							width:100px;
+						}
+
+						#phoneInput{
+							font-size:20px;
+							margin-top:20px;
+						}
+
+						#submitButton{
+							font-size:20px;
+							margin-top: 20px;
+						}
+
+
+
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div id="landingTop">
+            <div id="topTextContainer">
+                <h1>Get Help</h1>
+                <p>Here is some help for you</p>
+            </div>
+
+            <div id="startButton"> Get started</div>
+        </div>
+
+
+        <div id="mainBody">
+
+            <div class="questionContainer" id="qc1">
+                <div class="question">
+                    <p>How often have you had little interest or pleasure in doing things?</p>
+                </div>
+
+                <div class="responseContainer">
+                    <div class="response q1 r0">Not at all</div>
+                    <div class="response q1 r1">Several days</div>
+                    <div class="response q1 r2">More than half the days</div>
+                    <div class="response q1 r3">Nearly every day</div>
+                </div>
+            </div>
+
+
+
+            <div class="questionContainer" id="qc2">
+                <div class="question">
+                    <p>How often have you been bothered by feeling down, depressed or hopeless?</p>
+                </div>
+
+                <div class="responseContainer">
+                    <div class="response q2 r0">Not at all</div>
+                    <div class="response q2 r1">Several days</div>
+                    <div class="response q2 r2">More than half the days</div>
+                    <div class="response q2 r3">Nearly every day</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="resultsBottom">
+                <div id="resultsContainer">
+
+                    <p>Your results</p>
+
+                    <p class="displayResult">Depression <span id="depResult">~</span>/24</p>
+                    <p class="displayResult">Anxiety  <span id="anxResult">~</span>/21</p>
+
+                </div>
+
+								<div id="drugInputContainer">
+
+									<form action="/input" method="post">
+									<input id="drugInput" placeholder="Medication" name="drug">
+									<input id="drugDose" placeholder="Dose" name="dose"> <p style="display:inline">mg</p>
+
+									<!---<label for="drugFreq">How often?</label>--->
+							    <select name="drugFreq" id="drugFreq" name="freq">
+							      <option>Once a day</option>
+							      <option>Twice a day</option>
+							      <option>Three times a day</option>
+							      <option>Four times a day</option>
+							    </select>
+
+
+										<input type="hidden" name="depResult" placeholder="Name" id="depInput">
+										<input type="hidden" name="anxResult" placeholder="Name" id="anxInput">
+										<br><input type="text" name="number" placeholder="Number" id="phoneInput">
+										<div style="clear: both;"></div>
+
+										<button type="submit" id="submitButton">submit</button>
+									</form>
+
+								</div>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+
+            var str1= '<div class="questionContainer" id="qc'
+            //then the container id number
+            var str1a = '">'
+            var str2= '<div class="question"><p>'
+            //then comes the question
+            var str3= '</p></div>'
+            var str4= '<div class="responseContainer">'
+            var strResp1= '<div class="response'
+            //then q1 r0 for example
+            var strResp2= '">'
+            //then the Response text
+            var strResp3='</div>'
+            var str5='</div></div>'
+
+            function generateQuestion(question,questionNumber){
+                $("#mainBody").append(str1+ questionNumber+ str1a+str2+question+str3+str4
+                    +strResp1+ " q" + questionNumber + " r0" + strResp2 + "Not at all" +strResp3
+                    +strResp1+ " q" + questionNumber + " r1" + strResp2 + "Several days" +strResp3
+                    +strResp1+ " q" + questionNumber + " r2" + strResp2 + "More than half the days" +strResp3
+                    +strResp1+ " q" + questionNumber + " r3" + strResp2 + "Nearly every day" +strResp3
+                    +str5
+                )
+            }
+
+            generateQuestion("How often have you been bothered by trouble falling or staying asleep, or sleeping too much?",3);
+            generateQuestion("How often have you been bothered by feeling tired or having little energy?",4);
+            generateQuestion("How often have you been bothered by poor appetite or overeating?",5);
+            generateQuestion("How often have you been bothered by feeling bad about yourself, or that you are a failure, or have let yourself or your family down?",6);
+            generateQuestion("How often have you been bothered by trouble concentrating on things, such as reading the newspaper or watching television?",7);
+            generateQuestion("How often have you been bothered by moving or speaking so slowly that other people could have noticed, or the opposite - being so fidgety or restless that you have been moving around a lot more than usual?",8);
+            generateQuestion("How often have you been bothered by feeling nervous, anxious or on edge?",9);
+            generateQuestion("How often have you been bothered by not being able to stop or control worrying?",10);
+            generateQuestion("How often have you been bothered by worrying too much about different things?",11);
+            generateQuestion("How often have you been bothered by having trouble relaxing?",12);
+            generateQuestion("How often have you been bothered by being so restless that it is hard to sit still?",13);
+            generateQuestion("How often have you been bothered by becoming easily annoyed or irritable?",14);
+            generateQuestion("How often have you been bothered by feeling afraid as if something awful might happen?",15);
+
+
+            var scoreArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+            var depResult = 0;
+            var anxResult = 0;
+
+						var drugListArray = ["Citalopram","Escitalopram ","Paroxetine", "Fluoxetine ", "Fluvoxamine", "Sertraline", "Desvenlafaxine", "Duloxetine" , "Levomilnacipran" , "Milnacipran" , "Venlafaxine" , "Vilazodone", "Vortioxetine",
+					"Nefazodone", "Trazodone", "Reboxetine", "Teniloxazine", "Viloxazine", "Bupropion", "Amitriptyline", "Amitriptylinoxide", "Clomipramine", "Desipramine", "Dibenzepin", "Dimetacrine", "Dosulepin", "Doxepin", "Imipramine", "Lofepramine",
+				"Melitracen", "Nitroxazepine", "Nortriptyline", "Noxiptiline", "Opipramol", "Pipofezine", "Protriptyline", "Trimipramine", "Amoxapine", "Maprotiline", "Mianserin", "Mirtazapine", "Setiptiline", "Isocarboxazid", "Phenelzine", "Tranylcypromine",
+			"Selegiline", "Caroxazone", "Metralindole", "Moclobemide", "Pirlindole", "Toloxatone "];
+
+						$("#drugInput").autocomplete({
+							source:drugListArray
+						});
+
+
+						$("#drugFreq").selectmenu();
+
+            $("#startButton").click( function(){
+                $('html, body').animate({
+                    scrollTop: $("#qc1").offset().top+80
+                }, 1000);
+            })
+
+            $(".response").click( function(){
+                var qNumber = getQNumber(this);
+                var arrayNumber = qNumber.substring(1);
+                arrayNumber=arrayNumber-1;
+                console.log(qNumber)
+                console.log(getScore(this))
+                $("."+qNumber).removeClass("responseActive");
+                $(this).toggleClass("responseActive");
+                scoreArray[arrayNumber] = getScore(this);
+                addScore();
+                updateScore();
+
+                if (qNumber == "q15"){
+                    $('html, body').animate({
+                        scrollTop: $(resultsBottom).offset().top+80
+                    }, 1000);
+                }
+                else{
+                    $('html, body').animate({
+                        scrollTop: $("#qc"+(arrayNumber+2)).offset().top+80
+                    }, 1000);
+                }
+
+            })
+
+            function addScore(){
+                var depTemp = 0
+                for(var i=0; i<8;i++){
+                    depTemp += scoreArray[i]
+                }
+                var anxTemp = 0
+                for(var i=8; i<15;i++){
+                    anxTemp += scoreArray[i]
+                }
+                depResult = depTemp;
+              //  var input = document.getElementById('depInput');
+              //  input.value=depResult;
+                anxResult = anxTemp;
+                //var input = document.getElementById('anxInput');
+                //input.value=anxResult
+
+                $("#depInput").attr("value", depResult);
+                $("#anxInput").attr("value", anxResult);
+
+            }
+
+            function updateScore(){
+                $("#depResult").html(depResult);
+                $("#anxResult").html(anxResult);
+            }
+
+            function getScore(n){
+                if( $(n).hasClass("r0") ){
+                    return 0;
+                }
+                if( $(n).hasClass("r1") ){
+                    return 1;
+                }
+                if( $(n).hasClass("r2") ){
+                    return 2;
+                }
+                if( $(n).hasClass("r3") ){
+                    return 3;
+                }
+            };
+
+            function getQNumber(n){
+                for(var i = 1 ; i<20 ; i++){
+                    q= "q"+i
+                    if( $(n).hasClass(q)){
+                        return q;
+                    }
+                }
+            }
+
+
+
+
+            /*var questionString1 = '<div class="questionContainer">    <div class="question"><p>'
+            var questionString2=  '</p>     </div>      <div class="responseContainer">                 <div class="response 1">Not at all</div>                    <div class="response 2">Several days</div>                  <div class="response 3">More than half the days</div>                   <div class="response 4">Nearly every day</div>              </div></div>'
+
+            var questionArray = [ ]
+
+            for (var i = 0 ; i<14; i++){
+                $("#mainBody").append(questionString1 + "wow" + questionString2);
+            }*/
+
+
+
+
+        </script>
+
+
+    </body>
+
+
+</html>
