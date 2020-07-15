@@ -9,8 +9,8 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const nexmo = new Nexmo({
-  apiKey: '9ec7b65f',
-  apiSecret: 'NNdMS4P6ZhFgsOuv'
+  apiKey: '',
+  apiSecret: ''
 })
 
 app.post('/input', function(req, res) {
